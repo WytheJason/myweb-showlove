@@ -1,0 +1,177 @@
+		<!DOCTYPE html>
+		<html lang="en">
+
+		<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>2022许愿墙</title>
+		<h4>说出你2022想要完成的事。</h4>
+		<style>
+		* {
+		margin: 0;
+		padding: 0;
+		}
+
+		html {
+		height: 100%;
+		background: linear-gradient(0deg, rgb(171, 212, 238), skyblue);
+		}
+
+		body {
+		position: relative;
+		}
+
+		.container {
+		width: 100%;
+		height: 630px;
+		position: relative;
+		}
+
+		input[id="res"] {
+		width: 300px;
+		height: 40px;
+		position: fixed;
+		bottom: 30px;
+		left: 50%;
+		margin-left: -150px;
+		padding-left: 15px;
+		border: 1px solid #ccc;
+		outline: none;
+		border-radius: 5px;
+		}
+
+		.item {
+		width: 150px;
+		height: 50px;
+		position: absolute;
+		top: 100px;
+		left: 100px;
+		box-shadow: 0 2px 10px 1px rgba(0, 0, 0, 0.2);
+		padding: 10px;
+		border-radius: 15px/5px 10px 10px 0;
+		transform: skew(-1deg);
+		cursor: move;
+		}
+
+		.item span {
+		position: absolute;
+		right: 6px;
+		bottom: 4px;
+		font-size: 12px;
+		color: #eee;
+		cursor: pointer;
+		}
+
+		.comfirmBtn {
+		width: 100px;
+		height: 40px;
+		position: fixed;
+		bottom: 31px;
+		left: 64%;
+		border: none;
+		outline: none;
+		border:1px solid;
+		border-radius: 10px;
+		cursor: pointer;
+		}
+		</style>
+		</head>
+
+		<body>
+		<div class="container"></div>
+		<input type="text" name="res" id="res" placeholder="随便说说吧...点击确认按钮发布">
+		<button class="comfirmBtn">点击发布</button>
+		<script>
+		// 获取DOM元素
+		let container = document.getElementsByClassName('container')[0];
+		let btn = document.getElementsByClassName('comfirmBtn')[0];
+		// 默认的许愿单文字
+		let wishes = ['新年来好运', '能找一份好工作', '日语等级考试通过', '能找个女朋友'];
+		// 许愿单随机背景颜色
+		let bgcColors = ['#96c2f1', '#bbe1f1', '#e3e197', '#f8b3d0', '#ffcc00', 'rgba(255,123,123,1)', 'yellow','green', 'pink', 'skyblue'];
+		// 渲染函数 新增一个div元素 做好css配置以后将该div返回
+		let render = function (wish) {
+		// 生成随机数据
+		let bgcColorIndex = Math.floor(Math.random() * bgcColors.length);
+		let randomTop = Math.floor(Math.random() * (630 - 150)); // container容器的高减去150
+		let randomLeft = Math.floor(Math.random() * (window.innerWidth - 175)); // left值在减去盒子宽度150的基础上多减去了25px
+		let content = `<div class="item" style="top:${randomTop}px;left:${randomLeft}px;background:${bgcColors[bgcColorIndex]}">
+		${wish}
+		<span>关闭</span>
+		</div>`;
+		container.innerHTML += content;
+		}
+		// 页面刚开始加载时 将默认的许愿单加载到页面上
+		window.onload = function () {
+		// 遍历所有默认的许愿单 将其渲染到页面上面
+		for (let i = 0; i < wishes.length; i++) {
+		render(wishes[i]);
+		}
+		}
+		// 发布新内容函数
+		let newContent = function () {
+		if (res.value !== '') {
+		let inputText = res.value;
+		render(inputText);
+		res.value = '';
+		} else {
+		alert('不能为空！');
+		}
+		}
+		// 有两种方式可以添加新的愿望 按回车键 或者 点击发布按钮
+		document.onkeyup = function (e) {
+		if (e.keyCode === 13) {
+		newContent();
+		}
+		}
+		// 为确认按钮添加点击事件
+		btn.onclick = newContent;
+
+		// 通过事件委托 给整个document绑定点击事件 但是只有点击span元素的时候 移除其父节点
+		document.onclick = function (e) {
+		if (e.target.nodeName === 'SPAN') {
+		container.removeChild(e.target.parentNode);
+		}
+		}
+
+		// 设置许愿单拖动
+		container.onmousedown = function (e) {
+		if (e.target.className === 'item') {
+		let offsetX = parseInt(e.target.style.left); // 获取当前的x轴距离
+		let offsetY = parseInt(e.target.style.top); // 获取当前的y轴距离
+		let innerX = event.clientX - offsetX; // 获取鼠标在方块内的x轴距
+		let innerY = event.clientY - offsetY; // 获取鼠标在方块内的y轴距
+		let that = e.target;
+		document.onmousemove = function (e) {
+		that.style.left = event.clientX - innerX + "px";
+		that.style.top = event.clientY - innerY + "px";
+		// 边界判断
+		if (parseInt(that.style.left) <= 0) // 左边边界
+		{
+		that.style.left = "0px";
+		}
+		if (parseInt(that.style.top) <= 0) // 上边边界
+		{
+		that.style.top = "0px";
+		}
+		if (parseInt(that.style.left) >= window.innerWidth - 175) // 右边边界 = 窗口宽度 - 盒子大小 稍微多减去了25px
+		{
+		that.style.left = window.innerWidth - 175 + "px";
+		}
+		if (parseInt(that.style.top) >= 480) // 下边边界 = 630 - 150
+		{
+		that.style.top = 480 + "px";
+		}
+		}
+
+		document.onmouseup = function () {
+		document.onmousemove = null;
+		document.onmouseup = null;
+		}
+		}
+		}
+		</script>
+		</body>
+
+		</html>
