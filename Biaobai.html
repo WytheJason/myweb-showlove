@@ -1,9 +1,8 @@
 ﻿<!doctype html>
-<html>
 <head>
     <meta charset="utf-8"/>
-  
-<title>LoveYou❤</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>爱你❤LoveYou！</title>
 
     <style>
     html, body {
@@ -18,31 +17,28 @@
       height: 100%;
     }</style>
     </head>
-    <body>
-            <div id="countdown" style="color: deepskyblue;font-size: 30px;" >10秒后自动跳转</div>
-    <script src="countdown.js">
+    <body> 
+		 <div id="countdown" style="color:deepskyblue;"></div>
+
     <canvas id="pinkboard"></canvas>
-
+	
     <script>
-		function startCountdown(duration, redirectUrl) {
-	    let timer = duration, minutes, seconds;
-	    setInterval(function () {
-	        minutes = parseInt(timer / 60, 10);
-	        seconds = parseInt(timer % 60, 10);
-	        minutes = minutes < 10 ? "0" + minutes : minutes;
-	        seconds = seconds < 10 ? "0" + seconds : seconds;
-	        document.getElementById("countdown").innerHTML = minutes + ":" + seconds;
-	        if (--timer < 0) {
-	            timer = duration;
-	        }
-	    }, 1000);
-	    setTimeout(function() {
-	        window.location.href = redirectUrl; 
-	    }, duration * 1000);
-	}
-	startCountdown(10, 'https://www.bestbzw.xyz/lover.html');
-
-        
+					 function startCountdown(duration, redirectUrl) {
+								let timer = duration;
+								const countdownElement = document.getElementById('countdown');
+								const intervalId = setInterval(() => {
+									countdownElement.textContent = `Redirecting in ${timer} seconds...`;
+									if (timer <= 0) {
+										clearInterval(intervalId); // 清除定时器以防止重复跳转
+										window.location.href = redirectUrl; // 倒计时结束后的跳转链接
+									} else {
+										timer--; // 递减计时器值
+									}
+								}, 1000); // 每秒更新一次计时器值
+							}
+							
+							// 使用示例：5秒后跳转到 https://www.example.com
+							startCountdown(10, 'https://www.bestbzw.xyz/lover.html');
     /*
      * Settings
      */
