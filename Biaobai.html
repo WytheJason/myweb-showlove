@@ -20,30 +20,27 @@
     </head>
     <body>
             <div id="countdown" style="color: deepskyblue;font-size: 30px;" >10秒后自动跳转</div>
-            
-        <script src="countdown.js">
-		function startCountdown(duration, redirectUrl) {
-		    let timer = duration, minutes, seconds;
-		    setInterval(function () {
-		        minutes = parseInt(timer / 60, 10);
-		        seconds = parseInt(timer % 60, 10);
-		        minutes = minutes < 10 ? "0" + minutes : minutes;
-		        seconds = seconds < 10 ? "0" + seconds : seconds;
-		        document.getElementById("countdown").innerHTML = minutes + ":" + seconds;
-		        if (--timer < 0) {
-		            timer = duration;
-		        }
-		    }, 1000);
-		    setTimeout(function() {
-		        window.location.href = redirectUrl; 
-		    }, duration * 1000);
-		}
-		startCountdown(10, 'https://www.bestbzw.xyz/lover.html');
-	</script>
+    <script src="countdown.js">
     <canvas id="pinkboard"></canvas>
 
     <script>
-
+		function startCountdown(duration, redirectUrl) {
+	    let timer = duration, minutes, seconds;
+	    setInterval(function () {
+	        minutes = parseInt(timer / 60, 10);
+	        seconds = parseInt(timer % 60, 10);
+	        minutes = minutes < 10 ? "0" + minutes : minutes;
+	        seconds = seconds < 10 ? "0" + seconds : seconds;
+	        document.getElementById("countdown").innerHTML = minutes + ":" + seconds;
+	        if (--timer < 0) {
+	            timer = duration;
+	        }
+	    }, 1000);
+	    setTimeout(function() {
+	        window.location.href = redirectUrl; 
+	    }, duration * 1000);
+	}
+	startCountdown(10, 'https://www.bestbzw.xyz/lover.html');
 
         
     /*
